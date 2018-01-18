@@ -28,7 +28,7 @@ def grab(cam, queue, width, height, fps):
         if queue.qsize() < 10:
             queue.put(frame)
         else:
-            print
+            # print
             queue.qsize()
 
 
