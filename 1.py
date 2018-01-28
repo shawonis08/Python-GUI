@@ -1,66 +1,40 @@
 import sys
-from PyQt5.QtGui import QIcon
 
-from PyQt5.QtCore import (QDate, QDateTime, QRegExp, QSortFilterProxyModel, Qt,
-                          QTime)
-from PyQt5.QtGui import QStandardItemModel
-from PyQt5.QtWidgets import (QApplication, QCheckBox, QComboBox, QGridLayout,
-                             QGroupBox, QHBoxLayout, QLabel, QLineEdit, QTreeView, QVBoxLayout,
-                             QWidget)
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QHBoxLayout
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QPushButton
+
+# import random
 
 
-class App(QWidget):
-    FROM, SUBJECT, DATE = range(3)
+class Label(QLabel):
 
     def __init__(self):
-        super().__init__()
-        self.title = 'PyQt5 Treeview Example - pythonspot.com'
-        self.left = 10
-        self.top = 100
-        self.width = 640
-        self.height = 240
-        self.initUI()
+        super(Label, self).__init__()
 
-    def initUI(self):
-        self.setWindowTitle(self.title)
-        self.setGeometry(self.left, self.top, self.width, self.height)
+        self.letters = ['q','w','e','r','t','y']
 
-        self.dataGroupBox = QGroupBox("Inbox")
-        self.dataView = QTreeView()
-        self.dataView.setRootIsDecorated(False)
-        self.dataView.setAlternatingRowColors(True)
+        self.h_layout = QHBoxLayout()
+        self.setLayout(self.h_layout)
 
-        dataLayout = QHBoxLayout()
-        dataLayout.addWidget(self.dataView)
-        self.dataGroupBox.setLayout(dataLayout)
+        self.label = QLabel('Random letters: _')
+        self.btn = QPushButton("Roll")
+        self.btn.clicked.connect(self.change_label)
 
-        model = self.createMailModel(self)
-        self.dataView.setModel(model)
-        self.addMail(model, 'service@github.com', 'Your Github Donation', '03/25/2017 02:05 PM')
-        self.addMail(model, 'support@github.com', 'Github Projects', '02/02/2017 03:05 PM')
-        self.addMail(model, 'service@phone.com', 'Your Phone Bill', '01/01/2017 04:05 PM')
+        self.h_layout.addWidget(self.label)
 
-        mainLayout = QVBoxLayout()
-        mainLayout.addWidget(self.dataGroupBox)
-        self.setLayout(mainLayout)
+        self.h_layout.addWidget(self.btn)
 
-        self.show()
-
-    def createMailModel(self, parent):
-        model = QStandardItemModel(0, 3, parent)
-        model.setHeaderData(self.FROM, Qt.Horizontal, "From")
-        model.setHeaderData(self.SUBJECT, Qt.Horizontal, "Subject")
-        model.setHeaderData(self.DATE, Qt.Horizontal, "Date")
-        return model
-
-    def addMail(self, model, mailFrom, subject, date):
-        model.insertRow(0)
-        model.setData(model.index(0, self.FROM), mailFrom)
-        model.setData(model.index(0, self.SUBJECT), subject)
-        model.setData(model.index(0, self.DATE), date)
+    def change_label(self):
+        if len(self.letters)>0:
+            self.label.setText(self.letters.pop(0))
 
 
-if __name__ == '__main__':
+
+
+if __name__=="__main__":
     app = QApplication(sys.argv)
-    ex = App()
+    main_label = Label()
+    main_label.show()
     sys.exit(app.exec_())
